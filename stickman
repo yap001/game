@@ -294,3 +294,8 @@ games.sprites.append(door)
 sf = StickFigureSprite(games)
 games.sprites.append(sf)
 games.mainloop()
+
+
+
+
+
