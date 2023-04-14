@@ -277,7 +277,23 @@ form8 = PlatformSprite(games, PhotoImage(file = "resources/platform2.gif"), 45, 
 form9 = PlatformSprite(games, PhotoImage(file = "resources/platform3.gif"), 170, 250, 32, 10)
 form10 = PlatformSprite(games, PhotoImage(file = "resources/platform3.gif"), 230, 200, 32, 10)
 
+games.sprites.append(form1)
+games.sprites.append(form2)
+games.sprites.append(form3)
+games.sprites.append(form4)
+games.sprites.append(form5)
+games.sprites.append(form6)
+games.sprites.append(form7)
+games.sprites.append(form8)
+games.sprites.append(form8)
+games.sprites.append(form9)
+games.sprites.append(form10)
+door = DoorSprite(games, 45, 30, 40, 35)
+games.sprites.append(door)
 
+sf = StickFigureSprite(games)
+games.sprites.append(sf)
+games.mainloop()
 
 
 
