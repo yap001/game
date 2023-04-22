@@ -99,3 +99,130 @@ pygame.mixer.music.play(-1, 0.0)
 
 while True: # the game loop
 score += 1 # increase score
+
+for event in pygame.event.get():
+
+if event.type == QUIT:
+Exit()
+
+if event.type == KEYDOWN:
+if event.key == ord('z'):
+counter_reverse = True
+if event.key == ord('x'):
+slowing_reverse = True
+if event.key == K_LEFT or event.key == ord('a'):
+moving_right = False
+moving_left = True
+if event.key == K_RIGHT or event.key == ord('d'):
+moving_left = False
+moving_right = True
+if event.key == K_UP or event.key == ord('w'):
+moving_down = False
+moving_up = True
+if event.key == K_DOWN or event.key == ord('s'):
+moving_up = False
+moving_down = True
+
+if event.type == KEYUP:
+if event.key == ord('z'):
+counter_reverse = False
+score = 0
+if event.key == ord('x'):
+slowing_reverse = False
+score = 0
+if event.key == K_ESCAPE:
+Exit()
+
+if event.key == K_LEFT or event.key == ord('a'):
+moving_left = False
+if event.key == K_RIGHT or event.key == ord('d'):
+moving_right = False
+if event.key == K_UP or event.key == ord('w'):
+moving_up = False
+if event.key == K_DOWN or event.key == ord('s'):
+moving_down = False
+
+# Add new car at the top of the screen
+if not counter_reverse and not slowing_reverse:
+adding_counter_opponent += 1
+if adding_counter_opponent == new_rate_car_added:
+adding_counter_opponent = 0
+computer_car_size = 30
+new_computer_car = {'rect': pygame.Rect(random.randint(140, 485), 0 - computer_car_size, 23, 47),
+'speed': random.randint(minimum_speed_car, maximum_speed_car),
+'surface': pygame.transform.scale(random.choice(another), (23, 47)),
+}
+opponent.append(new_computer_car)
+left_side = {'rect': pygame.Rect(0, 0, 126, 600),
+'speed': random.randint(minimum_speed_car, maximum_speed_car),
+'surface': pygame.transform.scale(w_left, (126, 599)),
+}
+opponent.append(left_side)
+right_side = {'rect': pygame.Rect(497, 0, 303, 600),
+'speed': random.randint(minimum_speed_car, maximum_speed_car),
+'surface': pygame.transform.scale(w_right, (303, 599)),
+}
+opponent.append(right_side)
+
+# Move the player around.
+if moving_left and gamer_Rect.left > 0:
+gamer_Rect.move_ip(-1 * pl_movement_rate, 0)
+if moving_right and gamer_Rect.right < screen_width:
+gamer_Rect.move_ip(pl_movement_rate, 0)
+if moving_up and gamer_Rect.top > 0:
+gamer_Rect.move_ip(0, -1 * pl_movement_rate)
+if moving_down and gamer_Rect.bottom < screen_height:
+gamer_Rect.move_ip(0, pl_movement_rate)
+
+for car in opponent:
+if not counter_reverse and not slowing_reverse:
+car['rect'].move_ip(0, car['speed'])
+elif counter_reverse:
+car['rect'].move_ip(0, -5)
+elif slowing_reverse:
+car['rect'].move_ip(0, 1)
+
+for car in opponent[:]:
+if car['rect'].top > screen_height:
+opponent.remove(car)
+
+# Draw the game world on the window.
+screen_display_window.fill(bckg_c)
+
+# Draw the score and top score.
+txt_objects('SCORE: %s' % (score), fontsize, screen_display_window, 128, 0)
+txt_objects('TOP SCORE: %s' % (highest_scores), fontsize, screen_display_window, 128, 20)
+txt_objects('REST LIFE: %s' % (counting_seconds), fontsize, screen_display_window, 128, 40)
+
+screen_display_window.blit(player_car_photo, gamer_Rect)
+
+for car in opponent:
+screen_display_window.blit(car['surface'], car['rect'])
+
+pygame.display.update()
+
+# Check if any of the car have hit the player.
+if player_crash(gamer_Rect, opponent):
+if score > highest_scores:
+g = open("datafiles/save.dat", 'w')
+g.write(str(score))
+g.close()
+highest_scores = score
+break
+
+time_clock.tick(FPS)
+
+# "Game Over" screen.
+pygame.mixer.music.stop()
+counting_seconds = counting_seconds - 1
+game_over_music.play()
+time.sleep(1)
+if (counting_seconds == 0):
+chuckle.play()
+txt_objects('GAME OVER', fontsize, screen_display_window, (screen_width / 3), (screen_height / 3))
+txt_objects('PRESS ANY KEY TO PLAY AGAIN.', fontsize, screen_display_window, (screen_width / 3) - 80, (screen_height / 3) + 30)
+pygame.display.update()
+time.sleep(2)
+Press_Key_shortcut()
+counting_seconds = 3
+game_over_music.stop()
