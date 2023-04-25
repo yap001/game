@@ -1,0 +1,51 @@
+import turtle
+import random
+
+
+# --------------- Made this function to set our coordinates and environment whenever we play ------------- #
+def setWorld():
+    turtle.setworldcoordinates(-100, -100, 100, 100)
+    turtle.hideturtle()
+    turtle.pensize(10)
+    turtle.speed(0)
+    turtle.pu()
+    turtle.goto(-75, -75)
+
+
+# ------------ A function to draw the outer large square ------------- #
+def drawGrid():
+    for i in range(2):
+        turtle.fd(150)
+        turtle.lt(90)
+        turtle.fd(150)
+        turtle.lt(90)
+
+
+# ------------ A function to draw squares within the grid ---------#
+def drawSquare():
+    for i in range(2):
+        turtle.fd(37.5)
+        turtle.lt(90)
+        turtle.fd(37.5)
+        turtle.lt(90)
+
+
+# ------------- A function to keep drawing squares and moving forward until it reaches a specific x-coordinate --------#
+def move_turtle():
+    turtle.pd()
+    while not (turtle.xcor() >= 75):
+        drawSquare()
+        turtle.setx(turtle.xcor() + 37.5)
+
+
+# ---------------- 'move_turtle()' draws squares in one row.  ---------------------- #
+def make_box():
+    row_boxes = 0
+    turtle.sety(-37.5)
+    while row_boxes != 4:
+        move_turtle()
+        turtle.setx(-75)  # Start making boxes from the left for each row
+        turtle.sety(
+            turtle.ycor() + 37.5)  # Once boxes are filled in one row, move y coordinate up. E.g (Makes boxes along row 'D', now  move up
+        row_boxes += 1  # Do this until boxes are made in all four rows.
+    turtle.pu()
