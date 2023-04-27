@@ -49,3 +49,29 @@ def make_box():
             turtle.ycor() + 37.5)  # Once boxes are filled in one row, move y coordinate up. E.g (Makes boxes along row 'D', now  move up
         row_boxes += 1  # Do this until boxes are made in all four rows.
     turtle.pu()
+    
+    # ------------- A function to label the grid -------------- #
+def labelGrid():
+    rows = ['A', 'B', 'C', 'D']
+    cols = ['1', '2', '3', '4']
+
+    for row_name in rows:
+        turtle.write(row_name, move=False, align='left', font=('Georgia', 40, 'normal'))
+        turtle.sety(turtle.ycor() - 40)
+
+    turtle.goto(-65, 75)
+    for col_name in cols:
+        turtle.write(col_name, move=False, align='left', font=('Georgia', 40, 'normal'))
+        turtle.setx(turtle.xcor() + 40)
+
+
+# --------------- A function that uses the turtle class as an eraser ---------- #
+def eraseEntry(puzzle):
+    '''
+    Takes in the puzzle
+    Asks the user if they want to erase the entry before hand
+    '''
+    eraser = turtle.Turtle()
+    eraser.hideturtle()
+    eraser.speed(0)
+    eraser.pu()
