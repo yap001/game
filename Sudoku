@@ -75,3 +75,49 @@ def eraseEntry(puzzle):
     eraser.hideturtle()
     eraser.speed(0)
     eraser.pu()
+
+    ask_user = turtle.textinput('', 'Do you want to erase the previous entry? (y/n)')
+    if ask_user in ['y', 'YES', 'yes']:
+        eraser.goto(turtle.xcor() + 5,
+                    turtle.ycor())  # I had to adjust where the eraser goes accordingly. By trial and error I just had to move it a bit
+        eraser.pd()  # to the right.
+        eraser.color('white', 'white')
+        eraser.begin_fill()
+        eraser.circle(10)  # Using a white circle to be my eraser
+        eraser.end_fill()
+
+
+def take_input(puzzle):
+    grid_rows = ['A', 'B', 'C', 'D']
+    grid_cols = ['1', '2', '3', '4']
+
+    col_increment_size = [-60, -30, 10, 50]
+    row_increment_size = [50, 10, -30, -60]
+
+    user_input = turtle.textinput('', 'Enter Row and Column (e.g B4)')
+
+    x_cor = 0
+    y_cor = 0
+
+    for r in range(0, len(grid_rows)):
+        if grid_rows[r] == user_input[0]:  # First 'element' of the user's input will be the row. E.g B1
+            y_cor = row_increment_size[r]
+
+    for c in range(0, len(grid_cols)):
+        if grid_cols[c] == user_input[1]:  # Second 'element' of the user's input will be the column.
+            x_cor = col_increment_size[c]
+
+    turtle.goto(x_cor, y_cor)
+
+    # Appending the puzzle (which is a nested list)
+
+    get_input = turtle.textinput('', 'Enter a number and make your move!')
+
+    for i in range(0, len(grid_rows)):
+        if user_input[0] == grid_rows[i]:
+            for j in range(0, len(grid_cols)):
+                if user_input[1] == grid_cols[j]:
+                    if puzzle[i][j] != 0:  # Call the eraseEntry function and ask
+                        eraseEntry(puzzle)  # Ask the user if they want to erase the entry where there isn't a zero
+                    puzzle[i][j] = int(get_input)
+                    make_move = turtle.write(get_input, move=False, align='left', font=('Arial', 35, 'normal'))
